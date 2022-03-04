@@ -27,7 +27,11 @@ class MainActivity : AppCompatActivity() {
         var itemselected:TextView=findViewById(R.id.selectedMenu)
         when(id)
         {
-            R.id.action_input-> menu?.findItem(R.id.action_calc)?.isVisible=true
+            R.id.action_input->
+            {
+
+                menu?.findItem(R.id.action_calc)?.isVisible=true
+            }
             R.id.action_calc->this.finish()
             R.id.action_quit->this.finish()
         }
