@@ -25,7 +25,8 @@
         android:text="@string/label2"/>
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup">
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,5 +41,6 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/ok"
         android:text="OK"/>
 </LinearLayout>
