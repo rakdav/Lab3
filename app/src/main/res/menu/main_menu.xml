@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_input"
+        android:orderInCategory="1"
+        android:title="@string/input" />
+    <item
+        android:id="@+id/action_calc"
+        android:orderInCategory="2"
+        android:title="@string/calc" />
+    <item
+        android:id="@+id/action_quit"
+        android:orderInCategory="3"
+        android:title="@string/quit" />
+</menu>
