@@ -7,10 +7,6 @@ builder.Services.AddDbContext<DataContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration[
         "ConnectionStrings:ProductConnection"]);
-
-builder.Services.AddDbContext<DataContext>(opts => {
-    opts.UseSqlServer(builder.Configuration[
-    "ConnectionStrings:ProductConnection"]);
     opts.EnableSensitiveDataLogging(true);
 });
 var app = builder.Build();
