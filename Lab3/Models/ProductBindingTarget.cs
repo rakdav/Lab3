@@ -6,7 +6,7 @@ namespace Lab3.Models
     {
         [Required]
         public required string Name { get; set; }
-        [Range(1,1000)]
+        [Range(1,1000000)]
         public decimal Price { get; set; }
         [Range(1, long.MaxValue)]
         public long GategoryId{ get; set; }
