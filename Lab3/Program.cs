@@ -1,5 +1,8 @@
 using Lab3.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +13,19 @@ builder.Services.AddDbContext<DataContext>(opts =>
     opts.EnableSensitiveDataLogging(true);
 });
 builder.Services.AddControllers();
+builder.Services.AddRateLimiter(opts => {
+    opts.AddFixedWindowLimiter("fixedWindow", fixOpts => {
+        fixOpts.PermitLimit = 1;
+        fixOpts.QueueLimit = 0;
+        fixOpts.Window = TimeSpan.FromSeconds(15);
+    });
+});
+builder.Services.Configure<JsonOptions>(opts => {
+    opts.JsonSerializerOptions.DefaultIgnoreCondition
+        = JsonIgnoreCondition.WhenWritingNull;
+});
 var app = builder.Build();
+app.UseRateLimiter();
 app.MapControllers();
 app.UseMiddleware<Lab3.TestMiddleware>();
 app.MapGet("/", () => "Hello World!");

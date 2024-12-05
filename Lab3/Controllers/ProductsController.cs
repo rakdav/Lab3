@@ -30,6 +30,31 @@ namespace Lab3.Controllers
             return Ok(p);
         }
         [HttpPost]
-        public async Task<IActionResult> SaveProduct(Product )
+        public async Task<IActionResult> SaveProduct([FromBody] Product product)
+        {
+            await db.Products.AddAsync(product);
+            await db.SaveChangesAsync();
+            return Ok(product);
+        }
+        [HttpPut]
+        public async Task UpdateProduct(Product product)
+        {
+            db.Update(product);
+            await db.SaveChangesAsync();
+        }
+        [HttpDelete("{id}")]
+        public async Task DeleteProduct(long id)
+        {
+            db.Products.Remove(new Product()
+            {
+                ProductId=id,Name=string.Empty
+            });
+            await db.SaveChangesAsync();
+        }
+        [HttpGet("redirect")]
+        public IActionResult Redirect()
+        {
+            return RedirectToAction(nameof(GetProduct),new {Id=1});
+        }
     }
 }
