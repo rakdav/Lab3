@@ -20,11 +20,17 @@ builder.Services.AddRateLimiter(opts => {
         fixOpts.Window = TimeSpan.FromSeconds(15);
     });
 });
-builder.Services.Configure<JsonOptions>(opts => {
-    opts.JsonSerializerOptions.DefaultIgnoreCondition
-        = JsonIgnoreCondition.WhenWritingNull;
+//builder.Services.Configure<JsonOptions>(opts => {
+//    opts.JsonSerializerOptions.DefaultIgnoreCondition
+//        = JsonIgnoreCondition.WhenWritingNull;
+//});
+builder.Services.Configure<MvcNewtonsoftJsonOptions>(opts => {
+    opts.SerializerSettings.NullValueHandling
+    = Newtonsoft.Json.NullValueHandling.Ignore;
 });
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseRateLimiter();
 app.MapControllers();
 app.UseMiddleware<Lab3.TestMiddleware>();

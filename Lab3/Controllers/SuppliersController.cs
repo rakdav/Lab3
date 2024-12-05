@@ -11,23 +11,32 @@ namespace Lab3.Controllers
     public class SuppliersController : ControllerBase
     {
         private DataContext db;
-
         public SuppliersController(DataContext _db)
         {
             this.db = _db;
         }
-        [HttpGet("{id}")]
-        public async Task<Supplier?> GetSupplier(long id)
+
+        [HttpGet]
+        public IAsyncEnumerable<Supplier> GetSuppliers()
         {
-            Supplier supplier = await db.Suppliers.Include(s => s.Products).FirstAsync(s=>s.SupplierId==id);
-            if (supplier.Products != null)
+            return db.Suppliers.AsAsyncEnumerable();
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult?> GetSupplier(long id)
+        {
+            Supplier? supplier = await db.Suppliers.Include(s => s.Products).FirstOrDefaultAsync(s=>s.SupplierId==id);
+            if (supplier != null)
             {
-                foreach(Product item in supplier.Products)
+                if (supplier.Products != null)
                 {
-                    item.Supplier = null;
+                    foreach (Product item in supplier.Products)
+                    {
+                        item.Supplier = null;
+                    }
                 }
+                return Ok(supplier);
             }
-            return supplier;
+            return NotFound();
         }
         [HttpPatch("{id}")]
         public async Task<Supplier?> PatchSupplier(long id,

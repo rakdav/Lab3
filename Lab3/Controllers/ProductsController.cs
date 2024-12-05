@@ -1,4 +1,5 @@
 ﻿using Lab3.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.RateLimiting;
@@ -37,19 +38,22 @@ namespace Lab3.Controllers
             return Ok(product);
         }
         [HttpPut]
-        public async Task UpdateProduct(Product product)
+        public async Task<IActionResult> UpdateProduct(Product product)
         {
+            Product? p = await db.Products.FindAsync(product.ProductId);
+            if (p == null) return NotFound();
             db.Update(product);
             await db.SaveChangesAsync();
+            return Ok(product);
         }
         [HttpDelete("{id}")]
-        public async Task DeleteProduct(long id)
+        public async Task<IActionResult> DeleteProduct(long id)
         {
-            db.Products.Remove(new Product()
-            {
-                ProductId=id,Name=string.Empty
-            });
+            Product? p = await db.Products.FindAsync(id);
+            if (p == null) return NotFound();
+            db.Products.Remove(p);
             await db.SaveChangesAsync();
+            return Ok(p);
         }
         [HttpGet("redirect")]
         public IActionResult Redirect()
