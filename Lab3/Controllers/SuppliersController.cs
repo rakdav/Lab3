@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Lab3.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace Lab3.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class SuppliersController : ControllerBase
     {
         private DataContext db;

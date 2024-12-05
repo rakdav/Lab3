@@ -9,6 +9,7 @@ namespace Lab3.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [EnableRateLimiting("fixedWindow")]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private DataContext db;

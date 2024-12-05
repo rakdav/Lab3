@@ -1,5 +1,6 @@
 using Lab3.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,8 @@ app.MapControllers();
 app.UseMiddleware<Lab3.TestMiddleware>();
 app.Map("/login", async (MyUser user,DataContext db) => 
 {
-    MyUser? person = await db.Users!.FirstOrDefaultAsync(p => p.Login == user.Login && p.Password == user.Password);
+    List<Product> list = db.Products.ToList();
+    MyUser? person = await db.MyUsers!.FirstOrDefaultAsync(p => p.Login == user.Login && p.Password == user.Password);
     if (person is null) return Results.Unauthorized();
         var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Login) };
         var jwt = new JwtSecurityToken
@@ -74,7 +76,7 @@ app.Map("/login", async (MyUser user,DataContext db) =>
     return Results.Json(response);
     }
 );
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/",[Authorize]() => "Hello World!");
 var context = app.Services.CreateScope().ServiceProvider.
     GetRequiredService<DataContext>();
 SeedData.SeedDatabase(context);

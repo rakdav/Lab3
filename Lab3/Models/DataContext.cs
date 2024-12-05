@@ -8,6 +8,6 @@ namespace Lab3.Models
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Supplier> Suppliers => Set<Supplier>();
-        public DbSet<MyUser> Users => Set<MyUser>();
+        public DbSet<MyUser> MyUsers => Set<MyUser>();
     }
 }
