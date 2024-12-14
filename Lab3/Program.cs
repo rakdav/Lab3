@@ -48,11 +48,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey=true
     };
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
 app.MapControllers();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseMiddleware<Lab3.TestMiddleware>();
 app.Map("/login", async (MyUser user,DataContext db) => 
 {
@@ -76,10 +83,10 @@ app.Map("/login", async (MyUser user,DataContext db) =>
     return Results.Json(response);
     }
 );
-app.MapGet("/",[Authorize]() => "Hello World!");
+app.MapGet("/",() => "Hello World!");
 var context = app.Services.CreateScope().ServiceProvider.
     GetRequiredService<DataContext>();
-SeedData.SeedDatabase(context);
+//SeedData.SeedDatabase(context);
 app.Run();
 
 public class AuthOptions
