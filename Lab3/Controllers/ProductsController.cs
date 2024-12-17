@@ -8,7 +8,6 @@ namespace Lab3.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [EnableRateLimiting("fixedWindow")]
     [Authorize]
     public class ProductsController : ControllerBase
     {
@@ -43,9 +42,13 @@ namespace Lab3.Controllers
         {
             Product? p = await db.Products.FindAsync(product.ProductId);
             if (p == null) return NotFound();
-            db.Update(product);
+            p.CategoryId = product.CategoryId;
+            p.SupplierId = product.SupplierId;
+            p.Name = product.Name;
+            p.Price = product.Price;
+            db.Update(p);
             await db.SaveChangesAsync();
-            return Ok(product);
+            return Ok(p);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(long id)

@@ -86,7 +86,7 @@ app.Map("/login", async (MyUser user,DataContext db) =>
 app.MapGet("/",() => "Hello World!");
 var context = app.Services.CreateScope().ServiceProvider.
     GetRequiredService<DataContext>();
-//SeedData.SeedDatabase(context);
+SeedData.SeedDatabase(context);
 app.Run();
 
 public class AuthOptions
