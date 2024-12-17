@@ -26,10 +26,6 @@ builder.Services.AddRateLimiter(opts => {
         fixOpts.Window = TimeSpan.FromSeconds(15);
     });
 });
-//builder.Services.Configure<JsonOptions>(opts => {
-//    opts.JsonSerializerOptions.DefaultIgnoreCondition
-//        = JsonIgnoreCondition.WhenWritingNull;
-//});
 builder.Services.Configure<MvcNewtonsoftJsonOptions>(opts => {
     opts.SerializerSettings.NullValueHandling
     = Newtonsoft.Json.NullValueHandling.Ignore;
@@ -72,7 +68,7 @@ app.Map("/login", async (MyUser user,DataContext db) =>
             issuer:AuthOptions.ISSUER,
             audience:AuthOptions.AUDIENCE,
             claims:claims,
-            expires:DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+            expires:DateTime.UtcNow.Add(TimeSpan.FromMinutes(5)),
             signingCredentials:new SigningCredentials(AuthOptions.GetSimmetricSecurutyKey(),SecurityAlgorithms.HmacSha256));
         var encoderJWT =new JwtSecurityTokenHandler().WriteToken(jwt);
         var response = new
